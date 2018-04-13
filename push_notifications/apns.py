@@ -5,6 +5,7 @@ https://developer.apple.com/library/content/documentation/NetworkingInternet/Con
 """
 
 import time
+import os
 
 from apns2 import client as apns2_client
 from apns2 import errors as apns2_errors
@@ -34,7 +35,9 @@ def _apns_create_socket(certfile=None, application_id=None):
 	client = apns2_client.APNsClient(
 		certfile,
 		use_sandbox=get_manager().get_apns_use_sandbox(application_id),
-		use_alternative_port=get_manager().get_apns_use_alternative_port(application_id)
+		use_alternative_port=get_manager().get_apns_use_alternative_port(application_id),
+		proxy_host=os.environ.get('proxy_host'),
+		proxy_port=os.environ.get('proxy_port')
 	)
 	client.connect()
 	return client
